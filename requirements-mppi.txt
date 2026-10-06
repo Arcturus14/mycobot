@@ -1,0 +1,5 @@
+# Installed into ./third_party; torch itself comes from Isaac Sim's prebundles.
+pytorch-mppi==0.9.1
+arm-pytorch-utilities==0.5.0
+pytorch-seed==0.2.0
+triton==3.6.0

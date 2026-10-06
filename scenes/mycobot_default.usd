@@ -1,0 +1,71 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    startTimeCode = 0
+    endTimeCode = 1000000
+    timeCodesPerSecond = 50
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "World"
+{
+    def PhysicsScene "PhysicsScene"
+    {
+        vector3f physics:gravityDirection = (0, 0, -1)
+        # Kinematic MPPI phase: q[k+1] = q[k] + dt*dq has no gravity term.
+        # Restore 9.81 when switching to a dynamics-aware controller.
+        float physics:gravityMagnitude = 0
+        uint physxScene:timeStepsPerSecond = 50
+    }
+
+    def Xform "GroundPlane"
+    {
+        def Mesh "Visual"
+        {
+            uniform bool doubleSided = 0
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 2, 3]
+            normal3f[] normals = [(0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)]
+            point3f[] points = [(-2.5, -2.5, 0), (2.5, -2.5, 0), (2.5, 2.5, 0), (-2.5, 2.5, 0)]
+            color3f[] primvars:displayColor = [(0.35, 0.38, 0.42)]
+        }
+
+        def Plane "Collision" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            uniform token purpose = "guide"
+        }
+    }
+
+    def DistantLight "Light"
+    {
+        float inputs:angle = 0.53
+        color3f inputs:color = (1, 0.98, 0.92)
+        float inputs:intensity = 1000
+        double3 xformOp:rotateXYZ = (35, 0, 35)
+        uniform token[] xformOpOrder = ["xformOp:rotateXYZ"]
+    }
+
+    def Xform "Markers"
+    {
+        def Sphere "MppiGoal"
+        {
+            color3f[] primvars:displayColor = [(1, 0.02, 0.02)]
+            float[] primvars:displayOpacity = [0.9]
+            double radius = 0.012
+            token visibility = "invisible"
+            double3 xformOp:translate = (0.19436, 0.05679, 0.30906)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+    }
+
+    def Xform "MyCobot" (
+        prepend references = @../assets/mycobot.usd@
+    )
+    {
+    }
+}

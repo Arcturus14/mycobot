@@ -1,0 +1,125 @@
+#usda 1.0
+(
+    defaultPrim = "MyCobot"
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+# The generated package is kept below assets/mycobot_asset.  This stable entry
+# point selects PhysX and owns the drive defaults used by the standalone demos.
+def Xform "MyCobot" (
+    prepend references = @./mycobot_asset/mycobot_280_jn_adaptive_gripper.usda@
+    variants = {
+        string Physics = "physx"
+    }
+)
+{
+    # The importer left this visual Xform empty because the original joint5.dae
+    # is an assembly-style COLLADA file. Reuse the OBJ fix proven in the former
+    # mujoco_mycobot project while preserving the imported link and physics.
+    over "Geometry"
+    {
+        over "joint1"
+        {
+            over "joint2"
+            {
+                over "joint3"
+                {
+                    over "joint4"
+                    {
+                        over "joint5"
+                        {
+                            over "joint5" (
+                                prepend references = @./joint5_source_converted/joint5_obj.usd@</World/joint5>
+                            )
+                            {
+                                # Preserve the URDF visual origin. The referenced OBJ USD
+                                # authors an empty xformOpOrder on its root Xform.
+                                quatf xformOp:orient = (0.49999815, 0.50000185, -0.5, 0.5)
+                                float3 xformOp:scale = (1, 1, 1)
+                                double3 xformOp:translate = (0, 0, -0.03356)
+                                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                                over "mesh" (
+                                    prepend apiSchemas = ["MaterialBindingAPI"]
+                                )
+                                {
+                                    prepend rel material:binding = </MyCobot/VisualMaterials/Joint5Material>
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    def Scope "VisualMaterials"
+    {
+        # joint4 uses the same all-white texture and surface parameters as the
+        # original joint5 material, so reference it to keep both links identical.
+        def Material "Joint5Material" (
+            prepend references = @./mycobot_asset/payloads/materials.usda@</Materials/Material_001_1>
+        )
+        {
+        }
+    }
+
+    over "Physics"
+    {
+        over "joint2_to_joint1"
+        {
+            float drive:angular:physics:damping = 0.06981317
+            float drive:angular:physics:maxForce = 3
+            float drive:angular:physics:stiffness = 0.6981317
+            float drive:angular:physics:targetPosition = 0
+            float drive:angular:physics:targetVelocity = 0
+        }
+
+        over "joint3_to_joint2"
+        {
+            float drive:angular:physics:damping = 0.06981317
+            float drive:angular:physics:maxForce = 3
+            float drive:angular:physics:stiffness = 0.6981317
+            float drive:angular:physics:targetPosition = 0
+            float drive:angular:physics:targetVelocity = 0
+        }
+
+        over "joint4_to_joint3"
+        {
+            float drive:angular:physics:damping = 0.05235988
+            float drive:angular:physics:maxForce = 3
+            float drive:angular:physics:stiffness = 0.5235988
+            float drive:angular:physics:targetPosition = 0
+            float drive:angular:physics:targetVelocity = 0
+        }
+
+        over "joint5_to_joint4"
+        {
+            float drive:angular:physics:damping = 0.03490659
+            float drive:angular:physics:maxForce = 3
+            float drive:angular:physics:stiffness = 0.3490659
+            float drive:angular:physics:targetPosition = 0
+            float drive:angular:physics:targetVelocity = 0
+        }
+
+        over "joint6_to_joint5"
+        {
+            float drive:angular:physics:damping = 0.02617994
+            float drive:angular:physics:maxForce = 3
+            float drive:angular:physics:stiffness = 0.2617994
+            float drive:angular:physics:targetPosition = 0
+            float drive:angular:physics:targetVelocity = 0
+        }
+
+        over "joint6output_to_joint6"
+        {
+            float drive:angular:physics:damping = 0.01745329
+            float drive:angular:physics:maxForce = 3
+            float drive:angular:physics:stiffness = 0.1745329
+            float drive:angular:physics:targetPosition = 0
+            float drive:angular:physics:targetVelocity = 0
+        }
+    }
+}

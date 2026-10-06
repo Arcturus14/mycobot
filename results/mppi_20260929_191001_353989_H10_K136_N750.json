@@ -1,0 +1,63 @@
+{
+  "p_goal_mm": [
+    194.36,
+    56.79,
+    309.06
+  ],
+  "steps": 750,
+  "control_dt_sec": 0.02,
+  "seed": 7,
+  "render_every": 1,
+  "warmup_sec": 1.6540113479131833,
+  "backend": {
+    "device": "cuda",
+    "gpu_name": "NVIDIA GB10",
+    "torch_version": "2.11.0+cu128",
+    "pytorch_mppi_version": "0.9.1"
+  },
+  "position_drive": {
+    "stiffness": [
+      120.0,
+      120.0,
+      100.0,
+      80.0,
+      50.0,
+      30.0
+    ],
+    "damping": [
+      4.0,
+      4.0,
+      3.5,
+      3.0,
+      2.0,
+      1.5
+    ]
+  },
+  "mppi_config": {
+    "dt": 0.02,
+    "horizon": 10,
+    "num_samples": 136,
+    "temperature": 1.0,
+    "noise_sigma": 0.65,
+    "w_position": 180.0,
+    "w_terminal": 900.0,
+    "w_control": 0.025,
+    "w_smooth": 0.06,
+    "w_joint_limit": 1000.0,
+    "w_collision": 2500.0,
+    "w_stop": 1.5,
+    "joint_margin": 0.08726646259971647,
+    "collision_clearance": 0.012,
+    "slowdown_radius": 0.06,
+    "goal_tolerance": 0.005
+  },
+  "timing": {
+    "WorstT_ms": 23.236486013047397,
+    "WorstT_step": 578,
+    "meanT_ms": 20.324243924270075,
+    "p95T_ms": 21.008857060223818,
+    "stdT_ms": 0.4965656135035631,
+    "deadline_misses": 590,
+    "control_budget_ms": 20.0
+  }
+}
